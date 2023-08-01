@@ -67,22 +67,71 @@ public class Main {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public void realizarPedido(){
-        String[] sabores = {"Alhobresa", "Calabresa", "Frango com Catupiry", "Marguerita", "Milho com Bacon", "Mista", "Mussarela", "Portuguesa", "Quatro queijos", "Strogonoff de Carne"};
-        System.out.println("==========Pizzaria Massa==========");
-        System.out.println("Escolha o tamanho da sua pizza");
-        System.out.println("1 - Pequena      2 - Media      3 - Grande");
-        int tamanho = sc.nextInt();
-        System.out.println("Escolha a quantidade de sabores da sua pizza");
-        System.out.println("1 - 1 Sabor      2 - 2 Sabores      3 - 3 Sabores");
-        int quantidade = sc.nextInt();
-        for (int i=1;i<=quantidade;i++){
-            exibirMenu();
-            System.out.println("Escolha o " + i +"º sabor");
-
-        }
-
+public void realizarPedido() {
+    String[] saboresDisponiveis = {"Alhobresa", "Calabresa", "Frango com Catupiry", "Marguerita", "Milho com Bacon", "Mista", "Mussarela", "Portuguesa", "Quatro queijos", "Strogonoff de Carne"};
+    System.out.println("==========Pizzaria Massa==========");
+    System.out.println("Escolha o tamanho da sua pizza");
+    System.out.println("1 - Pequena      2 - Media      3 - Grande");
+    int escolha = sc.nextInt();
+    String tamanho = "";
+    switch (escolha) {
+        case 1:
+            tamanho = "Pequena";
+            break;
+        case 2:
+            tamanho = "Media";
+            break;
+        case 3:
+            tamanho = "Grande";
+            break;
+        default:
+            tamanho = "tamanho nao escolhido";
     }
+
+    System.out.println("Escolha a quantidade de sabores da sua pizza");
+    System.out.println("1 - 1 Sabor      2 - 2 Sabores      3 - 3 Sabores");
+    int quantidade = sc.nextInt();
+    sc.nextLine(); // Consumir a quebra de linha deixada pelo nextInt()
+
+    List<String> saboresEscolhidos = new ArrayList<>();
+    for (int i = 1; i <= quantidade; i++) {
+        exibirMenu();
+        System.out.println("Escolha o " + i + "º sabor");
+        int numeroSabor = sc.nextInt();
+        sc.nextLine(); // Consumir a quebra de linha deixada pelo nextInt()
+
+        if (numeroSabor >= 1 && numeroSabor <= saboresDisponiveis.length) {
+            saboresEscolhidos.add(saboresDisponiveis[numeroSabor - 1]);
+            System.out.println("O sabor escolhido foi: " + saboresDisponiveis[numeroSabor - 1]);
+        } else {
+            System.out.println("Número de sabor inválido. Escolha novamente.");
+            i--; // Repetir a iteração para escolher outro sabor
+        }
+    }
+
+    System.out.println("Digite o nome da pessoa:");
+    String nome = sc.nextLine();
+    System.out.println("Digite a idade da pessoa:");
+    int idade = sc.nextInt();
+    sc.nextLine();
+
+    List<Endereco> enderecos = new ArrayList<>();
+    System.out.println("Quantos endereços essa pessoa tem?");
+    int qtdEndereco = sc.nextInt();
+    sc.nextLine();
+
+    for (int j = 1; j <= qtdEndereco; j++) {
+        System.out.println("Digite o nome e o número do " + j + "º endereço dessa pessoa");
+        String enderecoNome = sc.nextLine();
+        int enderecoNumero = sc.nextInt();
+        sc.nextLine();
+        enderecos.add(new Endereco(enderecoNome, enderecoNumero));
+    }
+
+    Pedido pedido = new Pedido(tamanho, saboresEscolhidos); // Substitua "Tamanho escolhido" pelo tamanho selecionado
+    Pessoa pessoa = new Pessoa(nome, idade, enderecos, pedido);
+    pessoas.add(pessoa);
+}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
