@@ -72,8 +72,8 @@ public void realizarPedido() {
     System.out.println("==========Pizzaria Massa==========");
     System.out.println("Escolha o tamanho da sua pizza");
     System.out.println("1 - Pequena      2 - Media      3 - Grande");
-    int escolha = sc.nextInt();
     String tamanho = "";
+    int escolha = sc.nextInt();
     switch (escolha) {
         case 1:
             tamanho = "Pequena";
@@ -109,6 +109,13 @@ public void realizarPedido() {
         }
     }
 
+    System.out.println("Voce ja possui cadastro na loja?");
+    //se sim colocar pra pesquisar por nome
+    //se nao iniciar um cadastro novo
+
+
+
+    //iniciando um cadastro - Posso so chamar a funcao cadastrarpessoa()
     System.out.println("Digite o nome da pessoa:");
     String nome = sc.nextLine();
     System.out.println("Digite a idade da pessoa:");
