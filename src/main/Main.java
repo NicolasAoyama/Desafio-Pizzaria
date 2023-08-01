@@ -120,14 +120,14 @@ public void realizarPedido() {
     System.out.println("Escolha a quantidade de sabores da sua pizza");
     System.out.println("1 - 1 Sabor      2 - 2 Sabores      3 - 3 Sabores");
     int quantidade = sc.nextInt();
-    sc.nextLine(); // Consumir a quebra de linha deixada pelo nextInt()
+    sc.nextLine(); // Pra nao pular linha de inserir
 
     List<String> saboresEscolhidos = new ArrayList<>();
     for (int i = 1; i <= quantidade; i++) {
         exibirMenu();
         System.out.println("Escolha o " + i + "º sabor");
         int numeroSabor = sc.nextInt();
-        sc.nextLine(); // Consumir a quebra de linha deixada pelo nextInt()
+        sc.nextLine(); // Pra nao pular linha de inserir
 
         if (numeroSabor >= 1 && numeroSabor <= saboresDisponiveis.length) {
             saboresEscolhidos.add(saboresDisponiveis[numeroSabor - 1]);
@@ -193,8 +193,9 @@ public void verificarCadastro(){
             System.out.println("2. Exibir Menu");
             System.out.println("3. Realizar um Pedido");
             System.out.println("4. Ver pedidos em Aberto");
-            System.out.println("5. Ver pedidos Finalizados");
-            System.out.println("6. Sair");
+            System.out.println("5. Finalizar Pedido");
+            System.out.println("6. Ver pedidos Finalizados");
+            System.out.println("7. Sair");
             System.out.print("Escolha a opção desejada: ");
 
 
