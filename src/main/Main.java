@@ -32,19 +32,47 @@ public class Main {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public void exibirPessoas(List<Pessoa> pessoas) {
-        for (Pessoa pessoa : pessoas) {
-            System.out.println("Nome: " + pessoa.getNome());
-            System.out.println("Idade: " + pessoa.getIdade());
-            System.out.println("Endereços:");
+public void exibirPedidosAbertos(List<Pessoa> pessoas) {
+    for (Pessoa pessoa : pessoas) {
+        System.out.println("Nome: " + pessoa.getNome());
+        System.out.println("Idade: " + pessoa.getIdade());
+        System.out.println("Endereços:");
 
-            List<Endereco> enderecos = pessoa.getEnderecos();
-            for (Endereco endereco : enderecos) {
-                System.out.println("Rua: " + endereco.getRua());
-                System.out.println("Número: " + endereco.getNumero());
+        List<Endereco> enderecos = pessoa.getEnderecos();
+        for (Endereco endereco : enderecos) {
+            System.out.println("Rua: " + endereco.getRua());
+            System.out.println("Número: " + endereco.getNumero());
+            System.out.println();
+        }
+
+        Pedido pedidoEmAberto = pessoa.getPedidoEmAberto();
+        if (pedidoEmAberto != null) {
+            System.out.println("Pedido em aberto:");
+            System.out.println("Tamanho: " + pedidoEmAberto.getTamanho());
+            System.out.println("Sabores: " + pedidoEmAberto.getSabores());
+        }
+
+        List<Pedido> pedidosFeitos = pessoa.getPedidosFeitos();
+        if (!pedidosFeitos.isEmpty()) {
+            System.out.println("Pedidos feitos:");
+            for (Pedido pedido : pedidosFeitos) {
+                System.out.println("Tamanho: " + pedido.getTamanho());
+                System.out.println("Sabores: " + pedido.getSabores());
                 System.out.println();
             }
-            System.out.println("\n\n\n");
+        }
+
+        System.out.println("\n\n\n");
+    }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public void exibirNomes() {
+        System.out.println("Pessoas cadastradas:");
+        for (int i = 0; i < pessoas.size(); i++) {
+            Pessoa pessoa = pessoas.get(i);
+            System.out.println((i + 1) + ". " + pessoa.getNome());
         }
     }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -68,12 +96,13 @@ public class Main {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public void realizarPedido() {
+    String tamanho = "";
     String[] saboresDisponiveis = {"Alhobresa", "Calabresa", "Frango com Catupiry", "Marguerita", "Milho com Bacon", "Mista", "Mussarela", "Portuguesa", "Quatro queijos", "Strogonoff de Carne"};
     System.out.println("==========Pizzaria Massa==========");
     System.out.println("Escolha o tamanho da sua pizza");
     System.out.println("1 - Pequena      2 - Media      3 - Grande");
-    String tamanho = "";
     int escolha = sc.nextInt();
+
     switch (escolha) {
         case 1:
             tamanho = "Pequena";
@@ -109,35 +138,45 @@ public void realizarPedido() {
         }
     }
 
-    System.out.println("Voce ja possui cadastro na loja?");
-    //se sim colocar pra pesquisar por nome
-    //se nao iniciar um cadastro novo
+    verificarCadastro();
+    System.out.println("Pessoa  cadastrada");
 
+    exibirNomes();
 
-
-    //iniciando um cadastro - Posso so chamar a funcao cadastrarpessoa()
-    System.out.println("Digite o nome da pessoa:");
-    String nome = sc.nextLine();
-    System.out.println("Digite a idade da pessoa:");
-    int idade = sc.nextInt();
+    System.out.println("Digite o número da pessoa para associar o pedido:");
+    int numeroPessoa = sc.nextInt();
     sc.nextLine();
 
-    List<Endereco> enderecos = new ArrayList<>();
-    System.out.println("Quantos endereços essa pessoa tem?");
-    int qtdEndereco = sc.nextInt();
-    sc.nextLine();
+    if (numeroPessoa >= 1 && numeroPessoa <= pessoas.size()) {
+        Pessoa pessoaEscolhida = pessoas.get(numeroPessoa - 1);
+        Pedido pedido = new Pedido(tamanho, saboresEscolhidos);
+        pessoaEscolhida.setPedidoEmAberto(pedido);
+        pessoaEscolhida.addPedidoFeito(pedido);
+        pessoaEscolhida.setPedido(pedido);
+        System.out.println("Pedido associado à pessoa: " + pessoaEscolhida.getNome());
+    } else {
+        System.out.println("Número de pessoa inválido. Pedido não associado.");
 
-    for (int j = 1; j <= qtdEndereco; j++) {
-        System.out.println("Digite o nome e o número do " + j + "º endereço dessa pessoa");
-        String enderecoNome = sc.nextLine();
-        int enderecoNumero = sc.nextInt();
-        sc.nextLine();
-        enderecos.add(new Endereco(enderecoNome, enderecoNumero));
+    }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+public void verificarCadastro(){
+    int cadastro;
+    System.out.println("Voce ja possui cadastro na loja?\n 1 - Sim     2 - Nao");
+    cadastro = sc.nextInt();
+    sc.nextLine();
+    if (cadastro == 1){
+
+    }
+    else{
+    cadastrarPessoa();
     }
 
-    Pedido pedido = new Pedido(tamanho, saboresEscolhidos); // Substitua "Tamanho escolhido" pelo tamanho selecionado
-    Pessoa pessoa = new Pessoa(nome, idade, enderecos, pedido);
-    pessoas.add(pessoa);
+
+    //se sim colocar pra pesquisar por nome
+    //se nao iniciar um cadastro novo
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -151,10 +190,10 @@ public void realizarPedido() {
         do {
             System.out.println("\n===== Menu =====");
             System.out.println("1. Cadastrar um pessoa");
-            System.out.println("2. Exibir informacoes sobre as pessoas");
-            System.out.println("3. Exibir Menu");
-            System.out.println("4. Realizar um pedido");
-            System.out.println("5. Ver pedidos em aberto");
+            System.out.println("2. Exibir Menu");
+            System.out.println("3. Realizar um Pedido");
+            System.out.println("4. Ver pedidos em Aberto");
+            System.out.println("5. Ver pedidos Finalizados");
             System.out.println("6. Sair");
             System.out.print("Escolha a opção desejada: ");
 
@@ -166,13 +205,13 @@ public void realizarPedido() {
                     obj.cadastrarPessoa();
                     break;
                 case 2:
-                    obj.exibirPessoas(obj.pessoas);
-                    break;
-                case 3:
                     obj.exibirMenu();
                     break;
-                case 4:
+                case 3:
                     obj.realizarPedido();
+                    break;
+                case 4:
+                    obj.exibirPedidosAbertos(obj.pessoas);
                     break;
                 case 5:
 

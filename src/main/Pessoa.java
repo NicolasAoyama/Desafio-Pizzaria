@@ -10,18 +10,41 @@ public class Pessoa {
     private int idade;
     private List<Endereco> enderecos;
     private Pedido pedido;
+    private Pedido pedidoEmAberto;
+    private List<Pedido> pedidosFeitos;
 
     public Pessoa(String nome, int idade, List<Endereco> enderecos) {
         this.nome = nome;
         this.idade = idade;
         this.enderecos = enderecos;
-
+        this.pedidoEmAberto = null;
+        this.pedidosFeitos = new ArrayList<>();
     }
+    public void addPedidoFeito(Pedido pedido) {
+        pedidosFeitos.add(pedido);
+    }
+
     public Pessoa(String nome, int idade, List<Endereco> enderecos, Pedido pedido) {
         this.nome = nome;
         this.idade = idade;
         this.enderecos = enderecos;
         this.pedido = pedido;
+    }
+
+    public Pedido getPedidoEmAberto() {
+        return pedidoEmAberto;
+    }
+
+    public void setPedidoEmAberto(Pedido pedidoEmAberto) {
+        this.pedidoEmAberto = pedidoEmAberto;
+    }
+
+    public List<Pedido> getPedidosFeitos() {
+        return pedidosFeitos;
+    }
+
+    public void setPedidosFeitos(List<Pedido> pedidosFeitos) {
+        this.pedidosFeitos = pedidosFeitos;
     }
 
     public String getNome() {
