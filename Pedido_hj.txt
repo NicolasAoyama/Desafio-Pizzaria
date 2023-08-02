@@ -1,0 +1,5 @@
+Pedido do: hj
+Rua: 1
+Número: 1
+Tamanho da Pizza: Media
+1sabores: [Alhobresa, Alhobresa]

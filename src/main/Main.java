@@ -1,5 +1,8 @@
 package main;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -154,6 +157,7 @@ public void realizarPedido() {
         pessoaEscolhida.addPedidoFeito(pedido);
         pessoaEscolhida.setPedido(pedido);
         System.out.println("Pedido associado à pessoa: " + pessoaEscolhida.getNome());
+        DocumentoTxt(pessoas,pessoaEscolhida.getNome());
     } else {
         System.out.println("Número de pessoa inválido. Pedido não associado.");
 
@@ -178,6 +182,37 @@ public void verificarCadastro(){
     //se sim colocar pra pesquisar por nome
     //se nao iniciar um cadastro novo
 }
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+public static void DocumentoTxt(List<Pessoa> pessoas,String indexPedido){
+    boolean encontrou = false;
+        for (Pessoa pessoa : pessoas){
+            if(pessoa.getNome().equalsIgnoreCase(indexPedido)) {
+                String nomeArquivo = "Pedido_" + indexPedido + ".txt";
+                try (PrintWriter writer = new PrintWriter(new FileWriter(nomeArquivo))) {
+                    writer.println("Pedido do: " + indexPedido);
+
+                    List<Endereco> enderecos = pessoa.getEnderecos();
+                    for (Endereco endereco : enderecos) {
+                        writer.println("Rua: " + endereco.getRua());
+                        writer.println("Número: " + endereco.getNumero());
+                    }
+                    List<Pedido> pedidos = (List<Pedido>) pessoa.getPedidosFeitos();
+                    String primeiroTamanho = pedidos.get(0).getTamanho();
+                    writer.println("Tamanho da Pizza: " + primeiroTamanho);
+                    Pedido primeiroPedido = pedidos.get(0);
+                    writer.println("Sabores do primeiro pedido: " + primeiroPedido.getSabores());
+                    writer.flush();
+                    System.out.println("Arquivo " + nomeArquivo + " gerado !");
+                } catch (IOException e) {
+                    System.out.println("Erro ao gerar o documento .txt: " + e.getMessage());
+                }
+                break;
+            }
+    }
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
