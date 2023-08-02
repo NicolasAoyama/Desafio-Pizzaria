@@ -177,46 +177,76 @@ public void verificarCadastro(){
     else{
     cadastrarPessoa();
     }
-
-
-    //se sim colocar pra pesquisar por nome
-    //se nao iniciar um cadastro novo
 }
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+public void pedidoAcabado(List<Pessoa> pessoas) {
+    if (pessoas.isEmpty()) {
+        System.out.println("Nenhuma pessoa cadastrada.");
+    } else {
+        for (Pessoa pessoa : pessoas) {
+            System.out.println("Nome: " + pessoa.getNome());
+            System.out.println("Idade: " + pessoa.getIdade());
+            System.out.println("Endereços:");
+
+            List<Endereco> enderecos = pessoa.getEnderecos();
+            for (Endereco endereco : enderecos) {
+                System.out.println("Rua: " + endereco.getRua());
+                System.out.println("Número: " + endereco.getNumero());
+                System.out.println();
+            }
+
+            List<Pedido> pedidosFeitos = pessoa.getPedidosFeitos();
+            if (pedidosFeitos.isEmpty()) {
+                System.out.println("Nenhum pedido feito ainda ");
+            } else {
+                String primeiroTamanho = pedidosFeitos.get(0).getTamanho();
+                System.out.println("Tamanho da Pizza do primeiro pedido: " + primeiroTamanho);
+                Pedido primeiroPedido = pedidosFeitos.get(0);
+                System.out.println("Sabores do primeiro pedido: " + primeiroPedido.getSabores());
+                System.out.println();
+            }
+
+            System.out.println("\n\n\n");
+        }
+    }
+}
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public static void DocumentoTxt(List<Pessoa> pessoas,String indexPedido){
     boolean encontrou = false;
-        for (Pessoa pessoa : pessoas){
-            if(pessoa.getNome().equalsIgnoreCase(indexPedido)) {
-                String nomeArquivo = "Pedido_" + indexPedido + ".txt";
-                try (PrintWriter writer = new PrintWriter(new FileWriter(nomeArquivo))) {
-                    writer.println("Pedido do: " + indexPedido);
+    for (Pessoa pessoa : pessoas){
+        if(pessoa.getNome().equalsIgnoreCase(indexPedido)) {
+            String nomeArquivo = "Pedido_" + indexPedido + ".txt";
+            try (PrintWriter writer = new PrintWriter(new FileWriter(nomeArquivo))) {
+                writer.println("Pedido do: " + indexPedido);
 
-                    List<Endereco> enderecos = pessoa.getEnderecos();
-                    for (Endereco endereco : enderecos) {
-                        writer.println("Rua: " + endereco.getRua());
-                        writer.println("Número: " + endereco.getNumero());
-                    }
-                    List<Pedido> pedidos = (List<Pedido>) pessoa.getPedidosFeitos();
-                    String primeiroTamanho = pedidos.get(0).getTamanho();
-                    writer.println("Tamanho da Pizza: " + primeiroTamanho);
-                    Pedido primeiroPedido = pedidos.get(0);
-                    writer.println("Sabores do primeiro pedido: " + primeiroPedido.getSabores());
-                    writer.flush();
-                    System.out.println("Arquivo " + nomeArquivo + " gerado !");
-                } catch (IOException e) {
-                    System.out.println("Erro ao gerar o documento .txt: " + e.getMessage());
+                List<Endereco> enderecos = pessoa.getEnderecos();
+                for (Endereco endereco : enderecos) {
+                    writer.println("Rua: " + endereco.getRua());
+                    writer.println("Número: " + endereco.getNumero());
                 }
-                break;
+                List<Pedido> pedidos = (List<Pedido>) pessoa.getPedidosFeitos();
+                String primeiroTamanho = pedidos.get(0).getTamanho();
+                writer.println("Tamanho da Pizza: " + primeiroTamanho);
+                Pedido primeiroPedido = pedidos.get(0);
+                writer.println("Sabores do primeiro pedido: " + primeiroPedido.getSabores());
+                writer.flush();
+                System.out.println("Arquivo " + nomeArquivo + " gerado !");
+            } catch (IOException e) {
+                System.out.println("Erro ao gerar o documento .txt: " + e.getMessage());
             }
+            break;
+        }
     }
 }
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     public static void main(String[] args) {
         Main obj = new Main();
         Scanner scanner = new Scanner(System.in);
@@ -227,12 +257,10 @@ public static void DocumentoTxt(List<Pessoa> pessoas,String indexPedido){
             System.out.println("1. Cadastrar um pessoa");
             System.out.println("2. Exibir Menu");
             System.out.println("3. Realizar um Pedido");
-            System.out.println("4. Ver pedidos em Aberto");
-            System.out.println("5. Finalizar Pedido");
-            System.out.println("6. Ver pedidos Finalizados");
-            System.out.println("7. Sair");
-            System.out.print("Escolha a opção desejada: ");
+            System.out.println("4. Ver pedidos Finalizados");
+            System.out.println("5. Sair ");
 
+            System.out.print("Escolha a opção desejada: ");
 
             opcao = scanner.nextInt();
 
@@ -250,7 +278,7 @@ public static void DocumentoTxt(List<Pessoa> pessoas,String indexPedido){
                     obj.exibirPedidosAbertos(obj.pessoas);
                     break;
                 case 5:
-
+                    obj.pedidoAcabado(obj.pessoas);
                     break;
                 case 6:
                     System.out.println("Saindo do programa...");

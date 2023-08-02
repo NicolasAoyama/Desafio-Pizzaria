@@ -1,5 +1,0 @@
-Pedido do: Lucas
-Rua: 1
-Número: 1
-Tamanho: Media
-sabores: [Alhobresa, Calabresa, Frango com Catupiry]

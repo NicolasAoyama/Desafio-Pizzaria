@@ -1,6 +1,0 @@
-Pedido do: qw
-Rua: 1
-Número: 1
-Tamanho da Pizza: Media
-Sabores do primeiro pedido: [Alhobresa, Calabresa, Frango com Catupiry]
-sabores: [Alhobresa, Calabresa, Frango com Catupiry]
